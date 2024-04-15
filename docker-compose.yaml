@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      - "MYSQL_DATABASE=InvetoryManagement"
+      - "MYSQL_USER=user"
+      - "MYSQL_PASSWORD=root"
+      - "MYSQL_RANDOM_ROOT_PASSWORD"  # Specify the root password here
+    ports:
+      - "127.0.0.1:3307:3306"
+    volumes:
+      - C:/M.kharma_data/bzu/WebServices2022/docker/data/mysql:/var/lib/mysql
+
+  app:
+    image: 'mysql:8'
+    container_name: demo
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3307/InvetoryManagement?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=9090
+    ports:
+      - "127.0.0.1:9092:9091"
